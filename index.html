@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Rishi's Solar System Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <header>
+        <div class="greeting">Hey Rishi! 👋</div>
+        <h1>🚀 Your Solar System Adventure</h1>
+        <p class="subtitle">Explore the planets and take the quiz to win a surprise! 🍫</p>
+    </header>
+
+    <div class="controls">
+        <button class="btn btn-primary" id="startBtn" onclick="toggleAnimation()">▶️ Start Planets Moving</button>
+        <button class="btn btn-secondary" onclick="resetView()">🔄 Reset</button>
+        <button class="btn btn-quiz" onclick="startQuiz()">🎯 Start Quiz!</button>
+    </div>
+
+    <div class="solar-system" id="solarSystem">
+        <!-- Orbit Rings -->
+        <div class="orbit orbit-1" data-planet="mercury"></div>
+        <div class="orbit orbit-2" data-planet="venus"></div>
+        <div class="orbit orbit-3" data-planet="earth"></div>
+        <div class="orbit orbit-4" data-planet="mars"></div>
+        <div class="orbit orbit-5" data-planet="jupiter"></div>
+        <div class="orbit orbit-6" data-planet="saturn"></div>
+        <div class="orbit orbit-7" data-planet="uranus"></div>
+        <div class="orbit orbit-8" data-planet="neptune"></div>
+
+        <!-- Sun -->
+        <div class="sun" onclick="showSunInfo()">
+            <div class="sun-glow"></div>
+            <div class="sun-label">☀️ Sun</div>
+        </div>
+
+        <!-- Planets with animation -->
+        <div class="planet-container mercury-container">
+            <div class="planet mercury" onclick="showPlanetInfo('mercury')"></div>
+            <div class="planet-label">Mercury</div>
+        </div>
+
+        <div class="planet-container venus-container">
+            <div class="planet venus" onclick="showPlanetInfo('venus')"></div>
+            <div class="planet-label">Venus</div>
+        </div>
+
+        <div class="planet-container earth-container">
+            <div class="planet earth" onclick="showPlanetInfo('earth')">
+                <div class="moon"></div>
+            </div>
+            <div class="planet-label">🌍 Earth</div>
+        </div>
+
+        <div class="planet-container mars-container">
+            <div class="planet mars" onclick="showPlanetInfo('mars')"></div>
+            <div class="planet-label">🔴 Mars</div>
+        </div>
+
+        <div class="planet-container jupiter-container">
+            <div class="planet jupiter" onclick="showPlanetInfo('jupiter')"></div>
+            <div class="planet-label">🪐 Jupiter</div>
+        </div>
+
+        <div class="planet-container saturn-container">
+            <div class="planet saturn" onclick="showPlanetInfo('saturn')">
+                <div class="rings"></div>
+            </div>
+            <div class="planet-label">🪐 Saturn</div>
+        </div>
+
+        <div class="planet-container uranus-container">
+            <div class="planet uranus" onclick="showPlanetInfo('uranus')"></div>
+            <div class="planet-label">Uranus</div>
+        </div>
+
+        <div class="planet-container neptune-container">
+            <div class="planet neptune" onclick="showPlanetInfo('neptune')"></div>
+            <div class="planet-label">Neptune</div>
+        </div>
+    </div>
+
+    <!-- Planet Info Modal -->
+    <div class="modal-overlay" id="planetModal" onclick="closeModalOnOverlay(event)">
+        <div class="planet-card" onclick="event.stopPropagation()">
+            <button class="close-x" onclick="closeModal()">✖️</button>
+            <div class="planet-header">
+                <div class="planet-icon" id="modalIcon">🌍</div>
+                <div>
+                    <h2 id="modalTitle">Earth</h2>
+                    <p class="nickname" id="modalNickname">"The Blue Planet"</p>
+                </div>
+            </div>
+            
+            <ul class="fact-list" id="modalFacts">
+                <!-- Facts populated by JS -->
+            </ul>
+
+            <button class="close-btn" onclick="closeModal()">✖️ Close</button>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="modal-overlay" id="quizModal" onclick="closeQuizOnOverlay(event)">
+        <div class="quiz-card" onclick="event.stopPropagation()">
+            <button class="close-x" onclick="closeQuiz()">✖️</button>
+            
+            <div id="quizStart">
+                <h2>🎯 Rishi's Space Quiz!</h2>
+                <p class="quiz-intro">Answer 5 questions about the Solar System!<br>
+                If you score more than 80%, you win a special surprise! 🍫</p>
+                <button class="btn btn-primary btn-large" onclick="startQuizGame()">🚀 Start Quiz!</button>
+            </div>
+
+            <div id="quizGame" style="display:none;">
+                <div class="quiz-progress">Question <span id="currentQ">1</span> / <span id="totalQ">5</span></div>
+                <p class="quiz-question" id="quizQuestion"></p>
+                
+                <div class="quiz-options" id="quizOptions">
+                    <!-- Options populated by JS -->
+                </div>
+                
+                <div class="quiz-feedback" id="quizFeedback"></div>
+            </div>
+
+            <div id="quizResult" style="display:none;">
+                <h2 id="resultTitle">🎉 Quiz Complete!</h2>
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="finalScore">0</span>%
+                    </div>
+                </div>
+                
+                <p id="resultMessage"></p>
+                
+                <div id="chocolateReward" class="reward-box" style="display:none;">
+                    <div class="chocolate-animation">🍫🍫🍫</div>
+                    <h3>Congratulations Rishi! 🎉</h3>
+                    <p>You scored more than 80%!</p>
+                    <div class="reward-message">
+                        <strong>Avadhut Uncle promises you a chocolate! 🍫</strong>
+                    </div>
+                    <p class="uncle-note">Show this screen to Avadhut Uncle to claim your prize! 😊</p>
+                </div>
+
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Try Again</button>
+                <button class="btn btn-secondary" onclick="closeQuiz()">✖️ Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="facts-ticker">
+        <p id="factTicker">💫 Did You Know? Jupiter is so big that 1,300 Earths could fit inside it! 🌍</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
